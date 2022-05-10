@@ -53,7 +53,7 @@ class FormValidatorTest {
     }
 
     @Test
-    fun `confirm password returns false`() {
+    fun `empty confirm password returns false`() {
         val result = FormValidator.isVerifiedConfirmPassword(confirmPassword = "")
         assertThat(result).isFalse()
     }
