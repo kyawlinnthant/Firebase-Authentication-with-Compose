@@ -22,13 +22,14 @@ fun LoginContent(
     onValueChanged: (text: String) -> Unit
 
 ) {
-    Column(modifier = modifier.fillMaxSize()) {
-
-        Text(text = "Connect your friends", style = MaterialTheme.typography.h2)
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center
+    ) {
 
         Column(
             modifier = modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(16.dp),
             horizontalAlignment = Alignment.End
         ){
@@ -38,9 +39,12 @@ fun LoginContent(
                 onValueChanged = {
 
                 },
+                onValueCleared = {},
                 hint = "Fill Email",
                 keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Next
+                imeAction = ImeAction.Next,
+                isError = false,
+                errorMessage = "Error",
             )
             Spacer(modifier = modifier.height(16.dp))
             InputTextField(
@@ -49,13 +53,18 @@ fun LoginContent(
                 onValueChanged = {
 
                 },
+                onValueCleared = {},
                 hint = "Fill Password",
                 keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Done
+                imeAction = ImeAction.Done,
+                isError = false,
+                errorMessage = "error"
             )
             Spacer(modifier = modifier.height(16.dp))
             Button(
-                onClick = {},
+                onClick = {
+
+                },
                 shape = RoundedCornerShape(size = 12.dp),
                 modifier = modifier
                     .height(56.dp)
