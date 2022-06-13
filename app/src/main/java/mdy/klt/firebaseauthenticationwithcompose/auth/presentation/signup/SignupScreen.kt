@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.collectLatest
+import mdy.klt.firebaseauthenticationwithcompose.app.navigation.Destinations
 import mdy.klt.firebaseauthenticationwithcompose.auth.presentation.signup.udf.SignupAction
 import mdy.klt.firebaseauthenticationwithcompose.auth.presentation.signup.udf.SignupEvent
 
@@ -15,7 +16,7 @@ import mdy.klt.firebaseauthenticationwithcompose.auth.presentation.signup.udf.Si
 fun SignupScreen(
     navController: NavController
 ) {
-
+    SignupView(navController = navController)
 }
 
 @Composable
@@ -32,10 +33,10 @@ fun SignupView(
         vm.signupEvent.collectLatest {
             when (it) {
                 SignupEvent.NavigateToHome -> {
-                    // todo : navController navigate
+                    navController.navigate(Destinations.HOME)
                 }
                 SignupEvent.NavigateToLogin -> {
-                    // todo : navController navigate
+                    navController.navigate(Destinations.LOGIN)
                 }
                 is SignupEvent.ShowSnack -> {
                     scaffoldState.snackbarHostState.showSnackbar(message = it.message)

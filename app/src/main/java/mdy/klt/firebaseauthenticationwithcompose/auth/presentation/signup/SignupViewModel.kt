@@ -17,9 +17,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
-    private val validator : SignupValidate
+    private val validator: SignupValidate,
+    private val firebaseAuth: FirebaseAuth,
 
-) : ViewModel() {
+    ) : ViewModel() {
     private val _signupState = mutableStateOf(SignupState())
     val signupState: State<SignupState> get() = _signupState
     private val _signupEvent = MutableSharedFlow<SignupEvent>()
@@ -68,7 +69,7 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    private fun validate(){
+    private fun validate() {
         validator(
             form = signupState.value.form
         ).apply {
@@ -76,21 +77,30 @@ class SignupViewModel @Inject constructor(
                 error = this
             )
         }.also {
-            if (!it.emailError && !it.passwordError && !it.confirmPasswordError){
-                viewModelScope.launch {
-                    _signupEvent.emit(SignupEvent.ShowSnack(message = "Success Validation"))
-                }
+            if (!it.emailError && !it.passwordError && !it.confirmPasswordError) {
+                signup()
             }
         }
     }
 
     private fun signup() {
-       /* viewModelScope.launch {
+        viewModelScope.launch {
             firebaseAuth.createUserWithEmailAndPassword(
-                "email","password"
+                signupState.value.form.email,
+                signupState.value.form.password
             ).addOnCompleteListener {
-                //todo : check successful or not
+                if (it.isSuccessful) {
+                    viewModelScope.launch {
+                        _signupEvent.emit(SignupEvent.NavigateToHome)
+                    }
+                    return@addOnCompleteListener
+                }
+                viewModelScope.launch {
+                    _signupEvent.emit(SignupEvent.ShowSnack(message = "Can't Register"))
+
+                }
+
             }
-        }*/
+        }
     }
 }
